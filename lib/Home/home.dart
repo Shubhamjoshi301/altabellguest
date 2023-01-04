@@ -1,3 +1,6 @@
+import 'package:altabellguest/Utils/svg_strings.dart';
+import 'package:altabellguest/Widgets/offer_card.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:altabellguest/Utils/color_pallete.dart';
 import 'package:altabellguest/Widgets/home_circle.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +76,8 @@ class _HomePageState extends State<HomePage> {
                     .copyWith(color: ColorPalette.landingBlack, fontSize: 12),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 27, vertical: 33),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 27, vertical: 33),
                 child: Column(
                   children: [
                     Row(
@@ -113,6 +117,63 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                height: 62,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(32),
+                  color: ColorPalette.paleYellow,
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      'Your loundry is on the way',
+                      style: Fonts.inter_400.copyWith(
+                          fontSize: 14, color: ColorPalette.landingBlack),
+                    ),
+                    const Expanded(
+                      child: SizedBox(),
+                    ),
+                    SvgPicture.string(SvgStrings.acute),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      '15 mins',
+                      style: Fonts.inter_400.copyWith(
+                          fontSize: 14, color: ColorPalette.landingBlack),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              Text(
+                'Offers Created for you',
+                style: Fonts.inter_400.copyWith(
+                  fontSize: 14,
+                  color: ColorPalette.landingBlack,
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 80,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: const [
+                    OfferCard(offer: "Get ₹700", desc: "SPA discount"),
+                    OfferCard(offer: "Get ₹700", desc: "SPA discount"),
+                    OfferCard(offer: "Get ₹700", desc: "SPA discount"),
+                    OfferCard(offer: "Get ₹700", desc: "SPA discount"),
+                    OfferCard(offer: "Get ₹700", desc: "SPA discount"),
                   ],
                 ),
               )

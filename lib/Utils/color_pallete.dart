@@ -12,4 +12,6 @@ mixin ColorPalette {
   ]);
   static const Color ug1 = Color(0xff540375);
   static const Color landingBlack = Color(0xff2E2E2E);
+  static const Color paleYellow = Color(0xffFFFADE);
+  static const Color white = Color(0xfffdfdfd);
 }

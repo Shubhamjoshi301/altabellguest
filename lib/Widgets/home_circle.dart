@@ -15,7 +15,7 @@ class HomeCircle extends StatelessWidget {
         Container(
           height: 80,
           width: 80,
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
             gradient: ColorPalette.homecircleGradient,
             borderRadius: BorderRadius.circular(40),
@@ -36,7 +36,7 @@ class HomeCircle extends StatelessWidget {
             fontSize: 15,
             color: ColorPalette.landingBlack,
           ),
-        )
+        ),
       ],
     );
   }
