@@ -1,3 +1,4 @@
+import 'package:altabellguest/Food/food.dart';
 import 'package:altabellguest/Utils/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:altabellguest/Home/home.dart';
@@ -15,10 +16,7 @@ class _NavigationHandlerState extends State<NavigationHandler> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    Text(
-      'Index 1: Food',
-      style: optionStyle,
-    ),
+    FoodScreen(),
     Text(
       'Index 2: Service',
       style: optionStyle,

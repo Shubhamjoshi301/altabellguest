@@ -14,20 +14,26 @@ class UserProvider extends ChangeNotifier {
   //Get Request
   Future fetchData(Map body, Map refreshBody) async {
     print(body);
-    final Uri restAPIURL =
+    final Uri guestAPIURL =
         Uri.parse("http://localhost:5000/api/v1/guest/fetch");
 
     final Uri refreshTokenAPIURL =
         Uri.parse("http://localhost:5000/api/v1/auth/refreshToken");
-    http.Response responseToken = await httpClient.post(refreshTokenAPIURL,
-        headers: userHeaders, body: jsonEncode(refreshBody));
-
-    var tt = json.decode(responseToken.body)['authToken'];
-
-    userHeaders!['Authorization'] = tt;
-
-    http.Response response = await httpClient.post(restAPIURL,
+    http.Response response = await httpClient.post(guestAPIURL,
         headers: userHeaders, body: json.encode(body));
+
+    if (response.statusCode == 401) {
+      print('resettoken');
+      http.Response responseToken = await httpClient.post(refreshTokenAPIURL,
+          headers: userHeaders, body: jsonEncode(refreshBody));
+
+      var tt = json.decode(responseToken.body)['authToken'];
+
+      userHeaders!['Authorization'] = tt;
+
+      response = await httpClient.post(guestAPIURL,
+          headers: userHeaders, body: json.encode(body));
+    }
 
     userData = json.decode(response.body);
     print(userData['data']['guest']['rooms'][0]['number']);
