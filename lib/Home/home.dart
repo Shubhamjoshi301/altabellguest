@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 35),
           child: Consumer<UserProvider>(
             builder: (context, model, _) => FutureBuilder(
-              future: model.fetchData({
+              future: model.fetchUserData({
                 "guestId": "638f5baed0e017109959fe34"
               }, {
                 "refreshToken":

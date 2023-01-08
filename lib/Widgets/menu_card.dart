@@ -1,12 +1,26 @@
 import 'package:altabellguest/Utils/color_pallete.dart';
 import 'package:altabellguest/Utils/fonts.dart';
 import 'package:altabellguest/Utils/svg_strings.dart';
+import 'package:altabellguest/Widgets/add_to_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MenuCard extends StatelessWidget {
   final int rating;
-  const MenuCard({Key? key, required this.rating}) : super(key: key);
+  final String itemName;
+  final double price;
+  final String imgUrl;
+  final String desc;
+  final Function callBack;
+  const MenuCard(
+      {Key? key,
+      required this.rating,
+      required this.itemName,
+      required this.price,
+      required this.imgUrl,
+      required this.desc,
+      required this.callBack})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +44,7 @@ class MenuCard extends StatelessWidget {
                     width: 8,
                   ),
                   Text(
-                    'Paneer Masala',
+                    itemName,
                     style: Fonts.inter_400.copyWith(fontSize: 16),
                   ),
                 ],
@@ -54,7 +68,7 @@ class MenuCard extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                '₹ 399',
+                '₹ $price',
                 style: Fonts.inter_400.copyWith(fontSize: 16),
               ),
               const SizedBox(height: 16),
@@ -63,7 +77,7 @@ class MenuCard extends StatelessWidget {
                   height: 40,
                   width: 180,
                   child: Text(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+                    desc,
                     overflow: TextOverflow.ellipsis,
                     style: Fonts.inter_400
                         .copyWith(color: ColorPalette.darkgray, fontSize: 12),
@@ -76,18 +90,38 @@ class MenuCard extends StatelessWidget {
           ),
           Column(
             children: [
-              Container(
-                  height: 84,
-                  width: 84,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(16)),
-                  child: Placeholder()),
+              SizedBox(
+                height: 84,
+                width: 84,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.network(
+                    imgUrl,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
               Container(
                 margin: const EdgeInsets.only(top: 8),
                 width: 90,
                 height: 32,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showModalBottomSheet(
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(24),
+                              topRight: Radius.circular(24)),
+                        ),
+                        elevation: 10,
+                        context: context,
+                        builder: (context) {
+                          return AddToCart(
+                            callBack: callBack,
+                          );
+                        });
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(0),
                     elevation: 20,

@@ -12,8 +12,8 @@ class UserProvider extends ChangeNotifier {
   Map userData = {};
 
   //Get Request
-  Future fetchData(Map body, Map refreshBody) async {
-    print(body);
+  Future fetchUserData(Map body, Map refreshBody) async {
+    // print(body);
     final Uri guestAPIURL =
         Uri.parse("http://localhost:5000/api/v1/guest/fetch");
 
@@ -23,7 +23,7 @@ class UserProvider extends ChangeNotifier {
         headers: userHeaders, body: json.encode(body));
 
     if (response.statusCode == 401) {
-      print('resettoken');
+      print('resettoken user');
       http.Response responseToken = await httpClient.post(refreshTokenAPIURL,
           headers: userHeaders, body: jsonEncode(refreshBody));
 
@@ -36,7 +36,7 @@ class UserProvider extends ChangeNotifier {
     }
 
     userData = json.decode(response.body);
-    print(userData['data']['guest']['rooms'][0]['number']);
+    // print(userData['data']['guest']['rooms'][0]['number']);
     return userData;
   }
 }
