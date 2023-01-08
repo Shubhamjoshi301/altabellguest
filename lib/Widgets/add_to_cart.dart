@@ -1,12 +1,7 @@
-import 'dart:html';
-
 import 'package:altabellguest/Utils/color_pallete.dart';
 import 'package:altabellguest/Utils/fonts.dart';
-import 'package:altabellguest/Widgets/bottom_sheet.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 
 enum Portion { half, full }
 
@@ -65,7 +60,7 @@ class _AddToCartState extends State<AddToCart> {
                 SizedBox(
                   height: 40,
                   child: ListTile(
-                    contentPadding: EdgeInsets.all(0),
+                    contentPadding: const EdgeInsets.all(0),
                     title: Row(
                       children: [
                         Text(
@@ -93,7 +88,7 @@ class _AddToCartState extends State<AddToCart> {
                 SizedBox(
                   height: 40,
                   child: ListTile(
-                    contentPadding: EdgeInsets.all(0),
+                    contentPadding: const EdgeInsets.all(0),
                     title: Row(
                       children: [
                         Text(
@@ -248,8 +243,8 @@ class _AddToCartState extends State<AddToCart> {
             alignment: Alignment.bottomRight,
             child: GestureDetector(
               onTap: () {
-                // Navigator.pop(context);
                 widget.callBack;
+                Navigator.pop(context);
               },
               child: Container(
                 height: 56,

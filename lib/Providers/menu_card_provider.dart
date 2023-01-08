@@ -19,7 +19,7 @@ class MenuCardProvider extends ChangeNotifier {
     http.Response response = await httpClient.post(menuListAPIURL,
         headers: menuHeaders, body: json.encode(body));
     if (response.statusCode == 401) {
-      print('resettoken menu');
+      // print('resettoken menu');
       http.Response responseToken = await httpClient.post(refreshTokenAPIURL,
           headers: menuHeaders, body: jsonEncode(refreshBody));
 

@@ -1,6 +1,5 @@
 import 'package:altabellguest/Utils/color_pallete.dart';
 import 'package:altabellguest/Utils/fonts.dart';
-import 'package:altabellguest/Widgets/add_to_cart.dart';
 import 'package:flutter/material.dart';
 
 class CartBottomSheet extends StatelessWidget {
