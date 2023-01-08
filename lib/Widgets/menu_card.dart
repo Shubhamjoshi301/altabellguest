@@ -12,6 +12,7 @@ class MenuCard extends StatelessWidget {
   final String imgUrl;
   final String desc;
   final Function callBack;
+  final String type;
   const MenuCard(
       {Key? key,
       required this.rating,
@@ -19,7 +20,8 @@ class MenuCard extends StatelessWidget {
       required this.price,
       required this.imgUrl,
       required this.desc,
-      required this.callBack})
+      required this.callBack,
+      required this.type})
       : super(key: key);
 
   @override
@@ -39,7 +41,10 @@ class MenuCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  SvgPicture.string(SvgStrings.vegMark),
+                  SvgPicture.string(
+                    SvgStrings.vegMark,
+                    color: type == 'NON VEG' ? ColorPalette.landingred : null,
+                  ),
                   const SizedBox(
                     width: 8,
                   ),

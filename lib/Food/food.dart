@@ -200,7 +200,7 @@ class _FoodScreenState extends State<FoodScreen> {
                               child: Consumer<MenuCardProvider>(
                                 builder: (context, model, _) => FutureBuilder(
                                     future: model.fetchMenuList({
-                                      "menuId": "638d8ecbd0546d5072c04905"
+                                      "menuId": "638d8ad5078cdd3f3eec3b68"
                                     }, {
                                       "refreshToken":
                                           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZU51bWJlciI6IjkxNTY2MDE4NjYiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTY2NjUzNDU5Mn0.f21pIIJk1KM_uawCRuhYQCe1A_a2PkzSTu2KDyQUas0"
@@ -218,10 +218,14 @@ class _FoodScreenState extends State<FoodScreen> {
                                         //     },
                                         //   );
                                         // }
+                                        print(model.menuList['data'].length);
                                         return ListView.builder(
-                                          itemCount: model.menuList.length,
+                                          itemCount:
+                                              model.menuList['data'].length,
                                           itemBuilder: (context, index) {
-                                            if (veg && nonveg) {
+                                            if (veg == true && nonveg == true) {
+                                              // print("non veg $nonveg");
+                                              // print("veg $veg");
                                               return MenuCard(
                                                 rating: 4,
                                                 itemName: model.menuList['data']
@@ -233,13 +237,16 @@ class _FoodScreenState extends State<FoodScreen> {
                                                 price: model.menuList['data']
                                                     [index]['price'],
                                                 callBack: callBack,
+                                                type: model.menuList['data']
+                                                    [index]['type'],
                                               );
-                                            } else if (nonveg) {
-                                              print("non veg");
+                                            } else if (nonveg == true &&
+                                                veg == false) {
+                                              // print("non veg $nonveg");
+                                              // print("veg $veg");
                                               if (model.menuList['data'][index]
-                                                          ['type'] ==
-                                                      'NON VEG' &&
-                                                  veg == true) {
+                                                      ['type'] ==
+                                                  'NON VEG') {
                                                 return MenuCard(
                                                   rating: 4,
                                                   itemName:
@@ -252,16 +259,20 @@ class _FoodScreenState extends State<FoodScreen> {
                                                   price: model.menuList['data']
                                                       [index]['price'],
                                                   callBack: callBack,
+                                                  type: model.menuList['data']
+                                                      [index]['type'],
                                                 );
                                               } else {
                                                 return Container();
                                               }
-                                            } else if (veg) {
-                                              print('veg');
+                                            } else if (veg == true &&
+                                                nonveg == false) {
+                                              // print("non veg $nonveg");
+                                              // print("veg $veg");
+
                                               if (model.menuList['data'][index]
-                                                          ['type'] ==
-                                                      'VEG' &&
-                                                  veg == true) {
+                                                      ['type'] ==
+                                                  'VEG') {
                                                 return MenuCard(
                                                   rating: 4,
                                                   itemName:
@@ -274,6 +285,8 @@ class _FoodScreenState extends State<FoodScreen> {
                                                   price: model.menuList['data']
                                                       [index]['price'],
                                                   callBack: callBack,
+                                                  type: model.menuList['data']
+                                                      [index]['type'],
                                                 );
                                               } else {
                                                 return Container();
