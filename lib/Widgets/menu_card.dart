@@ -5,14 +5,17 @@ import 'package:altabellguest/Widgets/add_to_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MenuCard extends StatelessWidget {
+class MenuCard extends StatefulWidget {
   final int rating;
+  final String itemId;
   final String itemName;
   final double price;
   final String imgUrl;
   final String desc;
   final Function callBack;
+  
   final String type;
+
   const MenuCard(
       {Key? key,
       required this.rating,
@@ -21,8 +24,23 @@ class MenuCard extends StatelessWidget {
       required this.imgUrl,
       required this.desc,
       required this.callBack,
-      required this.type})
+      required this.type,
+      required this.itemId})
       : super(key: key);
+
+  @override
+  State<MenuCard> createState() => _MenuCardState();
+}
+
+int items = 0;
+
+class _MenuCardState extends State<MenuCard> {
+  void getCount(itemCount) {
+    setState(() {
+      print('incart $itemCount');
+      items = itemCount;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +50,6 @@ class MenuCard extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24), color: ColorPalette.white),
       height: 168,
-
       width: double.infinity,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -44,13 +61,15 @@ class MenuCard extends StatelessWidget {
                 children: [
                   SvgPicture.string(
                     SvgStrings.vegMark,
-                    color: type == 'NON VEG' ? ColorPalette.landingred : null,
+                    color: widget.type == 'NON VEG'
+                        ? ColorPalette.landingred
+                        : null,
                   ),
                   const SizedBox(
                     width: 8,
                   ),
                   Text(
-                    itemName,
+                    widget.itemName,
                     style: Fonts.inter_400.copyWith(fontSize: 16),
                   ),
                 ],
@@ -59,7 +78,7 @@ class MenuCard extends StatelessWidget {
               Row(
                 children: [
                   for (var i = 0; i < 5; i++)
-                    i < rating
+                    i < widget.rating
                         ? const Icon(
                             Icons.star,
                             color: ColorPalette.ug2,
@@ -74,7 +93,7 @@ class MenuCard extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                '₹ $price',
+                '₹ ${widget.price}',
                 style: Fonts.inter_400.copyWith(fontSize: 16),
               ),
               const SizedBox(height: 16),
@@ -83,7 +102,7 @@ class MenuCard extends StatelessWidget {
                   height: 40,
                   width: 180,
                   child: Text(
-                    desc,
+                    widget.desc,
                     overflow: TextOverflow.ellipsis,
                     style: Fonts.inter_400
                         .copyWith(color: ColorPalette.darkgray, fontSize: 12),
@@ -102,7 +121,7 @@ class MenuCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Image.network(
-                    imgUrl,
+                    widget.imgUrl,
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -112,8 +131,7 @@ class MenuCard extends StatelessWidget {
                 width: 90,
                 height: 32,
                 child: ElevatedButton(
-                  onPressed: ()
-                  {
+                  onPressed: () {
                     showModalBottomSheet(
                         isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
@@ -125,10 +143,13 @@ class MenuCard extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return AddToCart(
-                            callBack: callBack,
+                            itemId: widget.itemId,
+                            itemName: widget.itemName,
+                            itemPrice: widget.price,
+                            callBack: widget.callBack,
+                            setItemCount : getCount,
                           );
                         });
-                    
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(0),

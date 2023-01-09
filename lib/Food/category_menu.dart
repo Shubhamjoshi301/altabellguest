@@ -1,8 +1,8 @@
 import 'package:altabellguest/Providers/categorywise_menu_provider.dart';
-import 'package:altabellguest/Utils/fonts.dart';
+
 import 'package:altabellguest/Widgets/category_card.dart';
 
-import 'package:altabellguest/Widgets/menu_card.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

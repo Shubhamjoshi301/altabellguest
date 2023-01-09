@@ -4,6 +4,7 @@ import 'package:altabellguest/Widgets/menu_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class CategoryCard extends StatefulWidget {
   final bool veg;
   final bool nonveg;
@@ -31,7 +32,7 @@ class _CategoryCardState extends State<CategoryCard> {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       // height: widget.showCategory ? widget.count * 230 : 30,
-      duration: Duration(milliseconds: 300),
+      duration: const  Duration(milliseconds: 300),
       child: Consumer<CategoryMenuProvider>(
         builder: (context, model, _) => FutureBuilder(
             future: model.fetchCategoryList({
@@ -42,7 +43,7 @@ class _CategoryCardState extends State<CategoryCard> {
             }),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print(widget.ind);
+                // print(widget.ind);
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -57,10 +58,10 @@ class _CategoryCardState extends State<CategoryCard> {
                             child: const Icon(Icons.keyboard_arrow_up_sharp,
                                 size: 24),
                             onTap: () {
-                              print('pressed ${widget.ind}');
+                              // print('pressed ${widget.ind}');
                               setState(() {
                                 widget.showCategory = !widget.showCategory;
-                                print(widget.showCategory);
+                                // print(widget.showCategory);
                               });
                             },
                           ),
@@ -69,7 +70,7 @@ class _CategoryCardState extends State<CategoryCard> {
                       widget.showCategory
                           ? AnimatedContainer(
                               duration: const Duration(milliseconds: 4000),
-                              child: SizedBox(                        
+                              child: SizedBox(
                                 child: ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
@@ -97,6 +98,8 @@ class _CategoryCardState extends State<CategoryCard> {
                                         callBack: widget.callBack,
                                         type: model.menuList['data'][widget.ind]
                                             ['items'][index]['type'],
+                                        itemId: model.menuList['data']
+                                            [widget.ind]['items'][index]['_id'],
                                       );
                                     } else if (widget.nonveg == true &&
                                         widget.veg == false) {
@@ -123,6 +126,9 @@ class _CategoryCardState extends State<CategoryCard> {
                                           type: model.menuList['data']
                                                   [widget.ind]['items'][index]
                                               ['type'],
+                                          itemId: model.menuList['data']
+                                                  [widget.ind]['items'][index]
+                                              ['_id'],
                                         );
                                       } else {
                                         return Container();
@@ -153,6 +159,9 @@ class _CategoryCardState extends State<CategoryCard> {
                                           type: model.menuList['data']
                                                   [widget.ind]['items'][index]
                                               ['type'],
+                                          itemId: model.menuList['data']
+                                                  [widget.ind]['items'][index]
+                                              ['_id'],
                                         );
                                       } else {
                                         return Container();

@@ -2,16 +2,30 @@ import 'package:altabellguest/Utils/color_pallete.dart';
 import 'package:altabellguest/Utils/fonts.dart';
 import 'package:flutter/material.dart';
 
-
 enum Portion { half, full }
 
+// ignore: must_be_immutable
 class AddToCart extends StatefulWidget {
   final Function callBack;
-  const AddToCart({Key? key, required this.callBack}) : super(key: key);
+  final Function setItemCount;
+  final String itemId;
+  final String itemName;
+  final double itemPrice;
+  double currPrice = 0;
+   AddToCart(
+      {Key? key,
+      required this.callBack,
+      required this.itemId,
+      required this.itemName,
+      required this.itemPrice,
+      required this.setItemCount})
+      : super(key: key);
 
   @override
   State<AddToCart> createState() => _AddToCartState();
 }
+
+
 
 class _AddToCartState extends State<AddToCart> {
   Portion? _portion = Portion.full;
@@ -44,7 +58,7 @@ class _AddToCartState extends State<AddToCart> {
             height: 32,
           ),
           Text(
-            'Veg Hakka Noodles',
+            widget.itemName,
             style: Fonts.inter_400.copyWith(fontSize: 16),
           ),
           Container(
@@ -69,7 +83,7 @@ class _AddToCartState extends State<AddToCart> {
                         ),
                         const Expanded(child: SizedBox()),
                         Text(
-                          '₹ 399',
+                          '₹ ${widget.itemPrice}',
                           style: Fonts.inter_400.copyWith(fontSize: 16),
                         )
                       ],
@@ -97,7 +111,7 @@ class _AddToCartState extends State<AddToCart> {
                         ),
                         const Expanded(child: SizedBox()),
                         Text(
-                          '₹ 399',
+                          '₹ ${widget.itemPrice}',
                           style: Fonts.inter_400.copyWith(fontSize: 16),
                         )
                       ],
@@ -143,6 +157,11 @@ class _AddToCartState extends State<AddToCart> {
                         onChanged: (value) {
                           setState(() {
                             mayo = value;
+                            if (mayo!) {
+                              widget.currPrice += 20;
+                            } else {
+                              widget.currPrice -= 20;
+                            }
                           });
                         }),
                     Text(
@@ -168,6 +187,11 @@ class _AddToCartState extends State<AddToCart> {
                         onChanged: (value) {
                           setState(() {
                             tandoori = value;
+                            if (tandoori!) {
+                              widget.currPrice += 20;
+                            } else {
+                              widget.currPrice -= 20;
+                            }
                           });
                         }),
                     Text(
@@ -193,6 +217,11 @@ class _AddToCartState extends State<AddToCart> {
                         onChanged: (value) {
                           setState(() {
                             aachari = value;
+                            if (aachari!) {
+                              widget.currPrice += 20;
+                            } else {
+                              widget.currPrice -= 20;
+                            }
                           });
                         }),
                     Text(
@@ -218,6 +247,11 @@ class _AddToCartState extends State<AddToCart> {
                         onChanged: (value) {
                           setState(() {
                             greenSalad = value;
+                            if (greenSalad!) {
+                              widget.currPrice += 20;
+                            } else {
+                              widget.currPrice -= 20;
+                            }
                           });
                         }),
                     Text(
@@ -243,8 +277,10 @@ class _AddToCartState extends State<AddToCart> {
             alignment: Alignment.bottomRight,
             child: GestureDetector(
               onTap: () {
+                widget.setItemCount(1);
+                widget.currPrice += widget.itemPrice;
                 Navigator.pop(context);
-                widget.callBack();
+                widget.callBack(widget.currPrice, 1);
               },
               child: Container(
                 height: 56,

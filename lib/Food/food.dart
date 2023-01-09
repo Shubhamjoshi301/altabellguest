@@ -9,23 +9,27 @@ import 'package:altabellguest/Utils/fonts.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class FoodScreen extends StatefulWidget {
-  const FoodScreen({Key? key}) : super(key: key);
-
+   FoodScreen({Key? key}) : super(key: key);
+int inCart = 0;
+double totalPrice = 0;
   @override
   State<FoodScreen> createState() => _FoodScreenState();
 }
 
+
+
 class _FoodScreenState extends State<FoodScreen> {
   bool veg = true;
   bool nonveg = true;
-  bool inCart = false;
 
   bool fullMenu = true;
-  void callBack() {
+  void callBack(double currPrice, int itemCount) {
     setState(() {
-      print('incartinevrt');
-      inCart = !inCart;
+      print('currprice and curritems $currPrice $itemCount');
+      widget.totalPrice += currPrice;
+      widget.inCart += itemCount;
     });
   }
 
@@ -353,7 +357,7 @@ class _FoodScreenState extends State<FoodScreen> {
                               ? CategoryMenu(
                                   veg: veg, nonveg: nonveg, callBack: callBack)
                               : Container(),
-                          inCart
+                          widget.inCart > 0
                               ? const SizedBox(
                                   height: 72,
                                 )
@@ -378,7 +382,13 @@ class _FoodScreenState extends State<FoodScreen> {
                   child: child,
                 );
               },
-              child: inCart ? const CartBottomSheet() : Container(),
+              child: widget.inCart > 0
+                  ? CartBottomSheet(
+                      itemCount: widget.inCart,
+                      totalPrice:widget.totalPrice,
+                    
+                    )
+                  : Container(),
             )
           ],
         ),

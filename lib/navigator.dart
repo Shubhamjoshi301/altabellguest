@@ -14,18 +14,18 @@ class _NavigationHandlerState extends State<NavigationHandler> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
+  static  final List<Widget> _widgetOptions = <Widget>[
+    const HomePage(),
     FoodScreen(),
-    Text(
+    const Text(
       'Index 2: Service',
       style: optionStyle,
     ),
-    Text(
+    const Text(
       'Index 3: Complaint',
       style: optionStyle,
     ),
-    Text(
+    const Text(
       'Index 4: More',
       style: optionStyle,
     ),

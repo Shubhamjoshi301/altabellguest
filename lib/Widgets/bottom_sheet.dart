@@ -3,8 +3,11 @@ import 'package:altabellguest/Utils/fonts.dart';
 import 'package:flutter/material.dart';
 
 class CartBottomSheet extends StatelessWidget {
-  const CartBottomSheet({Key? key}) : super(key: key);
-  
+  final int itemCount;
+  final double totalPrice;
+  const CartBottomSheet(
+      {Key? key, required this.itemCount, required this.totalPrice})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +28,11 @@ class CartBottomSheet extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('1 item Added',
+            Text('$itemCount item Added $totalPrice',
                 style: Fonts.inter_400
                     .copyWith(color: ColorPalette.white, fontSize: 14)),
             TextButton(
-              onPressed: () {
-                
-              },
+              onPressed: () {},
               child: Text(
                 'View Cart',
                 style: Fonts.inter_400
