@@ -243,8 +243,8 @@ class _AddToCartState extends State<AddToCart> {
             alignment: Alignment.bottomRight,
             child: GestureDetector(
               onTap: () {
-                widget.callBack;
                 Navigator.pop(context);
+                widget.callBack();
               },
               child: Container(
                 height: 56,

@@ -1,8 +1,9 @@
-import 'package:altabellguest/Providers/menu_card_provider.dart';
+import 'package:altabellguest/Food/category_menu.dart';
+
 import 'package:altabellguest/Providers/user_provider.dart';
 import 'package:altabellguest/Utils/color_pallete.dart';
 import 'package:altabellguest/Widgets/bottom_sheet.dart';
-import 'package:altabellguest/Widgets/menu_card.dart';
+
 import 'package:flutter/material.dart';
 import 'package:altabellguest/Utils/fonts.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -19,6 +20,8 @@ class _FoodScreenState extends State<FoodScreen> {
   bool veg = true;
   bool nonveg = true;
   bool inCart = false;
+
+  bool fullMenu = true;
   void callBack() {
     setState(() {
       print('incartinevrt');
@@ -48,7 +51,7 @@ class _FoodScreenState extends State<FoodScreen> {
               height: double.infinity,
               decoration:
                   const BoxDecoration(gradient: ColorPalette.bgGradient),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 35),
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 35),
               child: Consumer<UserProvider>(
                 builder: (context, model, _) => FutureBuilder(
                   future: model.fetchUserData({
@@ -129,6 +132,62 @@ class _FoodScreenState extends State<FoodScreen> {
                           const SizedBox(height: 40),
                           Row(
                             children: [
+                              GestureDetector(
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.all(8),
+                                  height: 33,
+                                  decoration: BoxDecoration(
+                                    color: !fullMenu
+                                        ? const Color.fromRGBO(240, 203, 255, 0)
+                                        : const Color.fromRGBO(
+                                            240, 203, 255, 1),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    'Full Menu',
+                                    style:
+                                        Fonts.inter_400.copyWith(fontSize: 14),
+                                  ),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    fullMenu = true;
+                                  });
+                                },
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              GestureDetector(
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.all(8),
+                                  height: 33,
+                                  decoration: BoxDecoration(
+                                      color: fullMenu
+                                          ? const Color.fromRGBO(
+                                              240, 203, 255, 0)
+                                          : const Color.fromRGBO(
+                                              240, 203, 255, 1),
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Text(
+                                    'Recommended',
+                                    style:
+                                        Fonts.inter_400.copyWith(fontSize: 14),
+                                  ),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    fullMenu = false;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 40),
+                          Row(
+                            children: [
                               FlutterSwitch(
                                 width: 22.0,
                                 height: 12.0,
@@ -194,115 +253,111 @@ class _FoodScreenState extends State<FoodScreen> {
                               )
                             ],
                           ),
-                          Flexible(
-                            child: SizedBox(
-                              // height: 4000,
-                              child: Consumer<MenuCardProvider>(
-                                builder: (context, model, _) => FutureBuilder(
-                                    future: model.fetchMenuList({
-                                      "menuId": "638d8ad5078cdd3f3eec3b68"
-                                    }, {
-                                      "refreshToken":
-                                          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZU51bWJlciI6IjkxNTY2MDE4NjYiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTY2NjUzNDU5Mn0.f21pIIJk1KM_uawCRuhYQCe1A_a2PkzSTu2KDyQUas0"
-                                    }),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.hasData) {
-                                        // List MenuItems = [];
-                                        // for (var i = 0;
-                                        //     i < model.menuList.length;
-                                        //     i++) {
-                                        //   MenuItems.add(
-                                        //     {
-                                        //       'menuId': model.menuList[i]['_id'],
-                                        //       'name': model.menuList[i]['_id']
-                                        //     },
-                                        //   );
-                                        // }
-                                        // print(model.menuList['data'].length);
-                                        return ListView.builder(
-                                          itemCount:
-                                              model.menuList['data'].length,
-                                          itemBuilder: (context, index) {
-                                            if (veg == true && nonveg == true) {
-                                              // print("non veg $nonveg");
-                                              // print("veg $veg");
-                                              return MenuCard(
-                                                rating: 4,
-                                                itemName: model.menuList['data']
-                                                    [index]['name'],
-                                                imgUrl: model.menuList['data']
-                                                    [index]['imageUrl'],
-                                                desc: model.menuList['data']
-                                                    [index]['description'],
-                                                price: model.menuList['data']
-                                                    [index]['price'],
-                                                callBack: callBack,
-                                                type: model.menuList['data']
-                                                    [index]['type'],
-                                              );
-                                            } else if (nonveg == true &&
-                                                veg == false) {
-                                              // print("non veg $nonveg");
-                                              // print("veg $veg");
-                                              if (model.menuList['data'][index]
-                                                      ['type'] ==
-                                                  'NON VEG') {
-                                                return MenuCard(
-                                                  rating: 4,
-                                                  itemName:
-                                                      model.menuList['data']
-                                                          [index]['name'],
-                                                  imgUrl: model.menuList['data']
-                                                      [index]['imageUrl'],
-                                                  desc: model.menuList['data']
-                                                      [index]['description'],
-                                                  price: model.menuList['data']
-                                                      [index]['price'],
-                                                  callBack: callBack,
-                                                  type: model.menuList['data']
-                                                      [index]['type'],
-                                                );
-                                              } else {
-                                                return Container();
-                                              }
-                                            } else if (veg == true &&
-                                                nonveg == false) {
-                                              // print("non veg $nonveg");
-                                              // print("veg $veg");
-
-                                              if (model.menuList['data'][index]
-                                                      ['type'] ==
-                                                  'VEG') {
-                                                return MenuCard(
-                                                  rating: 4,
-                                                  itemName:
-                                                      model.menuList['data']
-                                                          [index]['name'],
-                                                  imgUrl: model.menuList['data']
-                                                      [index]['imageUrl'],
-                                                  desc: model.menuList['data']
-                                                      [index]['description'],
-                                                  price: model.menuList['data']
-                                                      [index]['price'],
-                                                  callBack: callBack,
-                                                  type: model.menuList['data']
-                                                      [index]['type'],
-                                                );
-                                              } else {
-                                                return Container();
-                                              }
-                                            } else {
-                                              return Container();
-                                            }
-                                          },
-                                        );
-                                      } else {
-                                        return Container();
-                                      }
-                                    }),
-                              ),
-                            ),
+                          const SizedBox(
+                            height: 14,
                           ),
+                          // Expanded(
+                          //   child: Consumer<MenuCardProvider>(
+                          //     builder: (context, model, _) => FutureBuilder(
+                          //         future: model.fetchMenuList({
+                          //           "menuId": "638d8ad5078cdd3f3eec3b68"
+                          //         }, {
+                          //           "refreshToken":
+                          //               "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZU51bWJlciI6IjkxNTY2MDE4NjYiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTY2NjUzNDU5Mn0.f21pIIJk1KM_uawCRuhYQCe1A_a2PkzSTu2KDyQUas0"
+                          //         }),
+                          //         builder: (context, snapshot) {
+                          //           if (snapshot.hasData) {
+                          //             return ListView.builder(
+                          //               physics: const BouncingScrollPhysics(),
+                          //               itemCount:
+                          //                   model.menuList['data'].length,
+                          //               itemBuilder: (context, index) {
+                          //                 if (veg == true && nonveg == true) {
+                          //                   // print("non veg $nonveg");
+                          //                   // print("veg $veg");
+                          //                   return MenuCard(
+                          //                     rating: 4,
+                          //                     itemName: model.menuList['data']
+                          //                         [index]['name'],
+                          //                     imgUrl: model.menuList['data']
+                          //                         [index]['imageUrl'],
+                          //                     desc: model.menuList['data']
+                          //                         [index]['description'],
+                          //                     price: model.menuList['data']
+                          //                         [index]['price'],
+                          //                     callBack: callBack,
+                          //                     type: model.menuList['data']
+                          //                         [index]['type'],
+                          //                   );
+                          //                 } else if (nonveg == true &&
+                          //                     veg == false) {
+                          //                   // print("non veg $nonveg");
+                          //                   // print("veg $veg");
+                          //                   if (model.menuList['data'][index]
+                          //                           ['type'] ==
+                          //                       'NON VEG') {
+                          //                     return MenuCard(
+                          //                       rating: 4,
+                          //                       itemName: model.menuList['data']
+                          //                           [index]['name'],
+                          //                       imgUrl: model.menuList['data']
+                          //                           [index]['imageUrl'],
+                          //                       desc: model.menuList['data']
+                          //                           [index]['description'],
+                          //                       price: model.menuList['data']
+                          //                           [index]['price'],
+                          //                       callBack: callBack,
+                          //                       type: model.menuList['data']
+                          //                           [index]['type'],
+                          //                     );
+                          //                   } else {
+                          //                     return Container();
+                          //                   }
+                          //                 } else if (veg == true &&
+                          //                     nonveg == false) {
+                          //                   // print("non veg $nonveg");
+                          //                   // print("veg $veg");
+
+                          //                   if (model.menuList['data'][index]
+                          //                           ['type'] ==
+                          //                       'VEG') {
+                          //                     return MenuCard(
+                          //                       rating: 4,
+                          //                       itemName: model.menuList['data']
+                          //                           [index]['name'],
+                          //                       imgUrl: model.menuList['data']
+                          //                           [index]['imageUrl'],
+                          //                       desc: model.menuList['data']
+                          //                           [index]['description'],
+                          //                       price: model.menuList['data']
+                          //                           [index]['price'],
+                          //                       callBack: callBack,
+                          //                       type: model.menuList['data']
+                          //                           [index]['type'],
+                          //                     );
+                          //                   } else {
+                          //                     return Container();
+                          //                   }
+                          //                 } else {
+                          //                   return Container();
+                          //                 }
+                          //               },
+                          //             );
+                          //           } else {
+                          //             return Container();
+                          //           }
+                          //         }),
+                          //   ),
+                          // ),
+                          fullMenu
+                              ? CategoryMenu(
+                                  veg: veg, nonveg: nonveg, callBack: callBack)
+                              : Container(),
+                          inCart
+                              ? const SizedBox(
+                                  height: 72,
+                                )
+                              : Container(),
                         ],
                       );
                     } else {

@@ -32,6 +32,7 @@ class MenuCard extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24), color: ColorPalette.white),
       height: 168,
+
       width: double.infinity,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
