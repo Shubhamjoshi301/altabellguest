@@ -1,5 +1,6 @@
 import 'package:altabellguest/Providers/categorywise_menu_provider.dart';
 import 'package:altabellguest/Providers/menu_card_provider.dart';
+import 'package:altabellguest/Providers/orderProvider.dart';
 import 'package:altabellguest/Providers/user_provider.dart';
 
 import 'package:altabellguest/navigator.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => MenuCardProvider()),
         ChangeNotifierProvider(create: (_) => CategoryMenuProvider()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()),
       ],
       child: MaterialApp(
         title: 'Uff Guest',

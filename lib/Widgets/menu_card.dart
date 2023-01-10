@@ -1,3 +1,4 @@
+import 'package:altabellguest/Modals/menu_card_modal.dart';
 import 'package:altabellguest/Utils/color_pallete.dart';
 import 'package:altabellguest/Utils/fonts.dart';
 import 'package:altabellguest/Utils/svg_strings.dart';
@@ -6,27 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MenuCard extends StatefulWidget {
-  final int rating;
-  final String itemId;
-  final String itemName;
-  final double price;
-  final String imgUrl;
-  final String desc;
   final Function callBack;
-  
-  final String type;
+  final MenuCardModal cardModal;
 
-  const MenuCard(
-      {Key? key,
-      required this.rating,
-      required this.itemName,
-      required this.price,
-      required this.imgUrl,
-      required this.desc,
-      required this.callBack,
-      required this.type,
-      required this.itemId})
-      : super(key: key);
+  const MenuCard({
+    Key? key,
+    required this.callBack,
+    required this.cardModal,
+  }) : super(key: key);
 
   @override
   State<MenuCard> createState() => _MenuCardState();
@@ -35,12 +23,18 @@ class MenuCard extends StatefulWidget {
 int items = 0;
 
 class _MenuCardState extends State<MenuCard> {
-  void getCount(itemCount) {
-    setState(() {
-      print('incart $itemCount');
-      items = itemCount;
-    });
-  }
+  // void getCount(itemCount) {
+  //   setState(() {
+  //     print('incart $itemCount');
+  //     items = itemCount;
+  //   });
+  // }
+
+  // void getTotalCost(totalCost) {
+  //   setState(() {
+  //     widget.cardModal.totalCost = totalCost;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +55,7 @@ class _MenuCardState extends State<MenuCard> {
                 children: [
                   SvgPicture.string(
                     SvgStrings.vegMark,
-                    color: widget.type == 'NON VEG'
+                    color: widget.cardModal.type == 'NON VEG'
                         ? ColorPalette.landingred
                         : null,
                   ),
@@ -69,7 +63,7 @@ class _MenuCardState extends State<MenuCard> {
                     width: 8,
                   ),
                   Text(
-                    widget.itemName,
+                    widget.cardModal.itemName,
                     style: Fonts.inter_400.copyWith(fontSize: 16),
                   ),
                 ],
@@ -78,7 +72,7 @@ class _MenuCardState extends State<MenuCard> {
               Row(
                 children: [
                   for (var i = 0; i < 5; i++)
-                    i < widget.rating
+                    i < widget.cardModal.rating
                         ? const Icon(
                             Icons.star,
                             color: ColorPalette.ug2,
@@ -93,7 +87,7 @@ class _MenuCardState extends State<MenuCard> {
               ),
               const SizedBox(height: 16),
               Text(
-                '₹ ${widget.price}',
+                '₹ ${widget.cardModal.price}',
                 style: Fonts.inter_400.copyWith(fontSize: 16),
               ),
               const SizedBox(height: 16),
@@ -102,7 +96,7 @@ class _MenuCardState extends State<MenuCard> {
                   height: 40,
                   width: 180,
                   child: Text(
-                    widget.desc,
+                    widget.cardModal.desc,
                     overflow: TextOverflow.ellipsis,
                     style: Fonts.inter_400
                         .copyWith(color: ColorPalette.darkgray, fontSize: 12),
@@ -121,7 +115,7 @@ class _MenuCardState extends State<MenuCard> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Image.network(
-                    widget.imgUrl,
+                    widget.cardModal.imgUrl,
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -132,24 +126,27 @@ class _MenuCardState extends State<MenuCard> {
                 height: 32,
                 child: ElevatedButton(
                   onPressed: () {
-                    showModalBottomSheet(
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(24),
-                              topRight: Radius.circular(24)),
-                        ),
-                        elevation: 10,
-                        context: context,
-                        builder: (context) {
-                          return AddToCart(
-                            itemId: widget.itemId,
-                            itemName: widget.itemName,
-                            itemPrice: widget.price,
-                            callBack: widget.callBack,
-                            setItemCount : getCount,
-                          );
-                        });
+                    setState(() {
+                      widget.cardModal.quantity += 1;
+                      widget.cardModal.totalCost += widget.cardModal.price;
+                      showModalBottomSheet(
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(24),
+                                topRight: Radius.circular(24)),
+                          ),
+                          elevation: 10,
+                          context: context,
+                          builder: (context) {
+                            return AddToCart(
+                              menuCardModal: widget.cardModal,
+                              callBack: widget.callBack,
+                              // setItemCount: getCount,
+                              // getTotalCost: getTotalCost,
+                            );
+                          });
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(0),
@@ -157,11 +154,13 @@ class _MenuCardState extends State<MenuCard> {
                     primary: ColorPalette.white,
                     shadowColor: const Color.fromRGBO(0, 0, 0, 0.2),
                   ),
-                  child: Text(
-                    'Add',
-                    style: Fonts.inter_400
-                        .copyWith(color: Colors.black, fontSize: 16),
-                  ),
+                  child: widget.cardModal.quantity > 0
+                      ? Text('hello')
+                      : Text(
+                          'Add',
+                          style: Fonts.inter_400
+                              .copyWith(color: Colors.black, fontSize: 16),
+                        ),
                 ),
               ),
             ],

@@ -1,3 +1,4 @@
+import 'package:altabellguest/Modals/menu_card_modal.dart';
 import 'package:altabellguest/Providers/categorywise_menu_provider.dart';
 import 'package:altabellguest/Utils/fonts.dart';
 import 'package:altabellguest/Widgets/menu_card.dart';
@@ -6,6 +7,7 @@ import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class CategoryCard extends StatefulWidget {
+  // final MenuCardModal menuCardmodal;
   final bool veg;
   final bool nonveg;
   final int ind;
@@ -13,15 +15,15 @@ class CategoryCard extends StatefulWidget {
 
   bool showCategory;
   final Function callBack;
-  CategoryCard(
-      {Key? key,
-      required this.veg,
-      required this.nonveg,
-      required this.callBack,
-      required this.ind,
-      required this.count,
-      required this.showCategory})
-      : super(key: key);
+  CategoryCard({
+    Key? key,
+    required this.veg,
+    required this.nonveg,
+    required this.callBack,
+    required this.ind,
+    required this.count,
+    required this.showCategory,
+  }) : super(key: key);
 
   @override
   State<CategoryCard> createState() => _CategoryCardState();
@@ -32,7 +34,7 @@ class _CategoryCardState extends State<CategoryCard> {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       // height: widget.showCategory ? widget.count * 230 : 30,
-      duration: const  Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       child: Consumer<CategoryMenuProvider>(
         builder: (context, model, _) => FutureBuilder(
             future: model.fetchCategoryList({
@@ -44,6 +46,7 @@ class _CategoryCardState extends State<CategoryCard> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 // print(widget.ind);
+
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -76,30 +79,33 @@ class _CategoryCardState extends State<CategoryCard> {
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: model.menuList['data'][widget.ind]
                                       ['count'],
-                                  // itemCount: 1,
+                              
                                   itemBuilder: (context, index) {
+                                    MenuCardModal cardMoadal = MenuCardModal(
+                                      itemId: model.menuList['data'][widget.ind]
+                                          ['items'][index]['_id'],
+                                      itemName: model.menuList['data']
+                                          [widget.ind]['items'][index]['name'],
+                                      imgUrl: model.menuList['data'][widget.ind]
+                                          ['items'][index]['imageUrl'],
+                                      desc: model.menuList['data'][widget.ind]
+                                          ['items'][index]['description'],
+                                      price: model.menuList['data'][widget.ind]
+                                          ['items'][index]['price'],
+                                      type: model.menuList['data'][widget.ind]
+                                          ['items'][index]['type'],
+                                      rating: 4,
+                                      quantity: 0,
+                                      totalCost: 0,
+                                    );
                                     if (widget.veg == true &&
                                         widget.nonveg == true) {
                                       // print("non veg $nonveg");
                                       // print("veg $veg");
+
                                       return MenuCard(
-                                        rating: 4,
-                                        itemName: model.menuList['data']
-                                                [widget.ind]['items'][index]
-                                            ['name'],
-                                        imgUrl: model.menuList['data']
-                                                [widget.ind]['items'][index]
-                                            ['imageUrl'],
-                                        desc: model.menuList['data'][widget.ind]
-                                            ['items'][index]['description'],
-                                        price: model.menuList['data']
-                                                [widget.ind]['items'][index]
-                                            ['price'],
+                                        cardModal: cardMoadal,
                                         callBack: widget.callBack,
-                                        type: model.menuList['data'][widget.ind]
-                                            ['items'][index]['type'],
-                                        itemId: model.menuList['data']
-                                            [widget.ind]['items'][index]['_id'],
                                       );
                                     } else if (widget.nonveg == true &&
                                         widget.veg == false) {
@@ -109,26 +115,8 @@ class _CategoryCardState extends State<CategoryCard> {
                                               ['items'][index]['type'] ==
                                           'NON VEG') {
                                         return MenuCard(
-                                          rating: 4,
-                                          itemName: model.menuList['data']
-                                                  [widget.ind]['items'][index]
-                                              ['name'],
-                                          imgUrl: model.menuList['data']
-                                                  [widget.ind]['items'][index]
-                                              ['imageUrl'],
-                                          desc: model.menuList['data']
-                                                  [widget.ind]['items'][index]
-                                              ['description'],
-                                          price: model.menuList['data']
-                                                  [widget.ind]['items'][index]
-                                              ['price'],
+                                          cardModal: cardMoadal,
                                           callBack: widget.callBack,
-                                          type: model.menuList['data']
-                                                  [widget.ind]['items'][index]
-                                              ['type'],
-                                          itemId: model.menuList['data']
-                                                  [widget.ind]['items'][index]
-                                              ['_id'],
                                         );
                                       } else {
                                         return Container();
@@ -142,26 +130,8 @@ class _CategoryCardState extends State<CategoryCard> {
                                               ['items'][index]['type'] ==
                                           'VEG') {
                                         return MenuCard(
-                                          rating: 4,
-                                          itemName: model.menuList['data']
-                                                  [widget.ind]['items'][index]
-                                              ['name'],
-                                          imgUrl: model.menuList['data']
-                                                  [widget.ind]['items'][index]
-                                              ['imageUrl'],
-                                          desc: model.menuList['data']
-                                                  [widget.ind]['items'][index]
-                                              ['description'],
-                                          price: model.menuList['data']
-                                                  [widget.ind]['items'][index]
-                                              ['price'],
+                                          cardModal: cardMoadal,
                                           callBack: widget.callBack,
-                                          type: model.menuList['data']
-                                                  [widget.ind]['items'][index]
-                                              ['type'],
-                                          itemId: model.menuList['data']
-                                                  [widget.ind]['items'][index]
-                                              ['_id'],
                                         );
                                       } else {
                                         return Container();

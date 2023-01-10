@@ -1,31 +1,26 @@
+import 'package:altabellguest/Modals/menu_card_modal.dart';
 import 'package:altabellguest/Utils/color_pallete.dart';
 import 'package:altabellguest/Utils/fonts.dart';
+import 'package:altabellguest/Widgets/menu_card.dart';
 import 'package:flutter/material.dart';
 
 enum Portion { half, full }
 
 // ignore: must_be_immutable
 class AddToCart extends StatefulWidget {
+  final MenuCardModal menuCardModal;
   final Function callBack;
-  final Function setItemCount;
-  final String itemId;
-  final String itemName;
-  final double itemPrice;
+
   double currPrice = 0;
-   AddToCart(
+  AddToCart(
       {Key? key,
       required this.callBack,
-      required this.itemId,
-      required this.itemName,
-      required this.itemPrice,
-      required this.setItemCount})
+      required this.menuCardModal})
       : super(key: key);
 
   @override
   State<AddToCart> createState() => _AddToCartState();
 }
-
-
 
 class _AddToCartState extends State<AddToCart> {
   Portion? _portion = Portion.full;
@@ -58,7 +53,7 @@ class _AddToCartState extends State<AddToCart> {
             height: 32,
           ),
           Text(
-            widget.itemName,
+            widget.menuCardModal.itemName,
             style: Fonts.inter_400.copyWith(fontSize: 16),
           ),
           Container(
@@ -83,7 +78,7 @@ class _AddToCartState extends State<AddToCart> {
                         ),
                         const Expanded(child: SizedBox()),
                         Text(
-                          '₹ ${widget.itemPrice}',
+                          '₹ ${widget.menuCardModal.price}',
                           style: Fonts.inter_400.copyWith(fontSize: 16),
                         )
                       ],
@@ -111,7 +106,7 @@ class _AddToCartState extends State<AddToCart> {
                         ),
                         const Expanded(child: SizedBox()),
                         Text(
-                          '₹ ${widget.itemPrice}',
+                          '₹ ${widget.menuCardModal.price}',
                           style: Fonts.inter_400.copyWith(fontSize: 16),
                         )
                       ],
@@ -277,10 +272,16 @@ class _AddToCartState extends State<AddToCart> {
             alignment: Alignment.bottomRight,
             child: GestureDetector(
               onTap: () {
-                widget.setItemCount(1);
-                widget.currPrice += widget.itemPrice;
+                // widget.setItemCount(1);
+                // widget.currPrice += widget.menuCardModal.price;
+                setState(() {
+                  // widget.menuCardModal.quantity += 1;
+                  widget.menuCardModal.totalCost +=
+                       widget.currPrice;
+                  widget.callBack(widget.menuCardModal);
+                });
+                // widget.getTotalCost(widget.menuCardModal.totalCost);
                 Navigator.pop(context);
-                widget.callBack(widget.currPrice, 1);
               },
               child: Container(
                 height: 56,

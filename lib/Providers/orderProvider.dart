@@ -4,16 +4,16 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
-class CategoryMenuProvider extends ChangeNotifier {
+class OrderProvider extends ChangeNotifier {
   final httpClient = http.Client();
   Map<String, String>? orderHeaders = {
     "Content-Type": "application/json",
     "Authorization":
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZU51bWJlciI6IjkxNTY2MDE4NjYiLCJ0eXBlIjoicmVmcmVzaCIsImlhdCI6MTY3MDMzNTc4NywiZXhwIjoxNjcwMzM2OTg3fQ.gZQdKq-2-1-FgccbZXIpodFRVJar89N8JwfQemzJ6c0',
   };
-  // Map menuList = {};
+  Map menuList = {};
 
-  Future fetchCategoryList(body, refreshBody) async {
+  Future placeOrder(body, refreshBody) async {
     final Uri createOrderAPIURL =
         Uri.parse("http://localhost:5000/api/v1/order/create");
     final Uri refreshTokenAPIURL =
@@ -31,8 +31,8 @@ class CategoryMenuProvider extends ChangeNotifier {
       response = await httpClient.post(createOrderAPIURL,
           headers: orderHeaders, body: json.encode(body));
     }
-    // menuList = jsonDecode(response.body);
-    // print(menuList);
+    menuList = jsonDecode(response.body);
+    print(menuList);
     // return menuList;
   }
 }

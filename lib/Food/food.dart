@@ -1,9 +1,16 @@
-import 'package:altabellguest/Food/category_menu.dart';
+// {
+//         'itemId': itemId,
+//         'itemName': itemName,
+//         'quantity': itemCount,
+//         'itemNetPrice': currPrice,
+//       }
 
+import 'package:altabellguest/Food/category_menu.dart';
+import 'package:altabellguest/Modals/menu_card_modal.dart';
+import 'package:altabellguest/Modals/orders_list_model.dart';
 import 'package:altabellguest/Providers/user_provider.dart';
 import 'package:altabellguest/Utils/color_pallete.dart';
 import 'package:altabellguest/Widgets/bottom_sheet.dart';
-
 import 'package:flutter/material.dart';
 import 'package:altabellguest/Utils/fonts.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -11,27 +18,32 @@ import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class FoodScreen extends StatefulWidget {
-   FoodScreen({Key? key}) : super(key: key);
-int inCart = 0;
-double totalPrice = 0;
+  FoodScreen({Key? key}) : super(key: key);
+  int countInCart = 0;
+  double totalPrice = 0;
+  // List<MenuCardModal> itemsInCart = [];
+  OrdersListModel itemsInCart =
+      OrdersListModel(orders: [], checkOutCost: 0, noOfItems: 0);
+
   @override
   State<FoodScreen> createState() => _FoodScreenState();
 }
-
-
 
 class _FoodScreenState extends State<FoodScreen> {
   bool veg = true;
   bool nonveg = true;
 
   bool fullMenu = true;
-  void callBack(double currPrice, int itemCount) {
+  void callback(MenuCardModal item) {
     setState(() {
-      print('currprice and curritems $currPrice $itemCount');
-      widget.totalPrice += currPrice;
-      widget.inCart += itemCount;
+      widget.itemsInCart.orders.add(item);
+      print('currprice and curritems ${item.totalCost} ${item.quantity}');
+      widget.itemsInCart.checkOutCost += item.totalCost;
+      widget.itemsInCart.noOfItems += item.quantity;
     });
   }
+
+
 
   @override
   // void initState() {
@@ -355,9 +367,9 @@ class _FoodScreenState extends State<FoodScreen> {
                           // ),
                           fullMenu
                               ? CategoryMenu(
-                                  veg: veg, nonveg: nonveg, callBack: callBack)
+                                  veg: veg, nonveg: nonveg, callBack: callback)
                               : Container(),
-                          widget.inCart > 0
+                          widget.countInCart > 0
                               ? const SizedBox(
                                   height: 72,
                                 )
@@ -382,11 +394,14 @@ class _FoodScreenState extends State<FoodScreen> {
                   child: child,
                 );
               },
-              child: widget.inCart > 0
+              child: widget.itemsInCart.noOfItems > 0
                   ? CartBottomSheet(
-                      itemCount: widget.inCart,
-                      totalPrice:widget.totalPrice,
-                    
+                      itemCount: widget.itemsInCart.noOfItems,
+                      totalPrice: widget.itemsInCart.checkOutCost,
+                      itemsInCart: widget.itemsInCart,
+                      updateCartCallback: () {
+                        setState(() {});
+                      },
                     )
                   : Container(),
             )

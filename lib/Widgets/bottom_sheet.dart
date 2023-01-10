@@ -1,3 +1,6 @@
+import 'package:altabellguest/Food/order_summary.dart';
+import 'package:altabellguest/Modals/menu_card_modal.dart';
+import 'package:altabellguest/Modals/orders_list_model.dart';
 import 'package:altabellguest/Utils/color_pallete.dart';
 import 'package:altabellguest/Utils/fonts.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +8,13 @@ import 'package:flutter/material.dart';
 class CartBottomSheet extends StatelessWidget {
   final int itemCount;
   final double totalPrice;
+  final Function updateCartCallback;
+  final OrdersListModel itemsInCart;
   const CartBottomSheet(
-      {Key? key, required this.itemCount, required this.totalPrice})
+      {Key? key,
+      required this.itemCount,
+      required this.totalPrice,
+      required this.itemsInCart, required this.updateCartCallback})
       : super(key: key);
 
   @override
@@ -32,7 +40,15 @@ class CartBottomSheet extends StatelessWidget {
                 style: Fonts.inter_400
                     .copyWith(color: ColorPalette.white, fontSize: 14)),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrderSummary(
+                        itemsInCart: itemsInCart, callback: updateCartCallback),
+                  ),
+                );
+              },
               child: Text(
                 'View Cart',
                 style: Fonts.inter_400
